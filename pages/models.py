@@ -50,7 +50,7 @@ class Page(models.Model):
         slug = models.SlugField(max_length=200, null=True)
         parent = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
         template = models.CharField(max_length=100, choices=TEMPLATE_CHOICES)
-        banner = models.ForeignKey(Image, blank=True, on_delete=models.SET_NULL)
+        banner = models.ForeignKey(Image, blank=True, null=True, on_delete=models.SET_NULL)
         body = models.TextField(max_length=10000)
         tags = models.ManyToManyField(Tag, blank=True)
         summary = models.TextField(max_length=300, blank=True)

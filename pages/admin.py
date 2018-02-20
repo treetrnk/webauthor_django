@@ -5,7 +5,7 @@ from datetime import datetime
 import hashlib
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'get_url', 'banner', 'get_banner', 'user', 'published_date')
+    list_display = ('title', 'slug', 'get_url', 'banner', 'get_banner', 'author', 'pub_date')
     prepopulated_fields = {'slug': ('title',)}
     def get_banner(self, obj):
         return format_html(
@@ -19,14 +19,14 @@ class PageAdmin(admin.ModelAdmin):
     def get_url(self, obj):
         return format_html(
                 '<a href="{}" target="post">{}</a>',
-                '/' + str(obj.published_date.year) + '/' + 
-                    str(obj.published_date.month) + '/' + 
-                    str(obj.published_date.day) + '/' + 
+                '/' + str(obj.pub_date.year) + '/' + 
+                    str(obj.pub_date.month) + '/' + 
+                    str(obj.pub_date.day) + '/' + 
                     obj.slug + '?code=' + obj.code(),
                 'View Post'
         )
     get_url.short_description = 'URL'
-    get_url.admin_order_field = "published_date"
+    get_url.admin_order_field = "pub_date"
 
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('name', 'file')
