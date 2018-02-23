@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from datetime import datetime
 #from .tools import recursive_parents
+import hashlib
 
 class Tag(models.Model):
         name = models.CharField(max_length=50)
@@ -55,7 +57,8 @@ class Page(models.Model):
         tags = models.ManyToManyField(Tag, blank=True)
         summary = models.TextField(max_length=300, blank=True)
         sidebar = models.TextField(max_length=1000, blank=True)
-        author = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+        author = models.ForeignKey(User, on_delete=models.PROTECT)
+        sort = models.IntegerField(default=75)
         pub_date = models.DateTimeField(auto_now_add=True)
         edit_date = models.DateTimeField(auto_now=True)
 
@@ -77,6 +80,16 @@ class Page(models.Model):
                         return recursive_parents(self.parent)
                 else:
                         return False
+
+        def banner_url(self):
+            if self.banner is None:
+                return '/media/default.png'
+            return '/media/' + self.banner.filename()
+
+        def code(self):
+            return hashlib.sha512(str(self.slug + 
+                str(datetime.now().month) + 
+                str(datetime.now().day)).encode('utf-8')).hexdigest()
 
         def show_story_title(self):
                 display_in = ['chapter', 'post']

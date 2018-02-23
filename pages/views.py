@@ -7,6 +7,15 @@ import hashlib
 
 utc = pytz.UTC
 
+def default_meta(title='', image='/static/images/logo.png', description='A blog by Nathan Hare about Fate Core and other roleplaying games.'):
+    title_suffix = '' if len(title) else ' - A blog by Nathan Hare'
+    return {
+        'title': str(title) + 'rpg stuff' + str(title_suffix),
+        'image': str(image),
+        'favicon': '/static/images/favicon.png',
+        'description': str(description),
+    }
+
 def index(request):
     try:
         tag = request.GET['tag'] 
@@ -19,12 +28,7 @@ def index(request):
     print('Tags: ' + str(tag))
     print('Search: ' + str(search))
     context = {}
-    context['meta'] = {
-        'title': 'rpg stuff - A blog by Nathan Hare',
-        'image': '/static/images/logo.png',
-        'favicon': '/static/images/favicon.png',
-        'description': 'A blog by Nathan Hare about Fate Core and other roleplaying games.',
-    }
+    contect['meta'] = default_meta()
     # get the blog pages that are published
     if tag:
         #tag_array = ','.join(tags)
@@ -41,7 +45,7 @@ def index(request):
     # now return the rendered template
     return render(request, 'pages/page.html', context)
 
-def page(request, year, month, day, slug):
+def page(request, path):
     page = Page.objects.filter(pub_date__year=year,
         pub_date__month=month,
         #pub_date__day=day,
@@ -67,11 +71,6 @@ def page(request, year, month, day, slug):
         return handler404(request)
 
 def rss(request):
-    meta = {
-        'title': 'rpg stuff - A blog by Nathan Hare',
-        'image': '/static/images/logo.png',
-        'favicon': '/static/images/favicon.png',
-        'description': 'A blog by Nathan Hare about Fate Core and other roleplaying games.',
-    }
+    meta = default_meta()
     pages = Page.objects.filter(pub_date__lte=datetime.now()).order_by('-pub_date')
     return render(request, 'pages/rss.xml', {'pages': pages, 'meta': meta})
