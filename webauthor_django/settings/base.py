@@ -65,6 +65,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'webauthor_django.context_processors.baseurl',
+                'webauthor_django.context_processors.nav',
+                'webauthor_django.context_processors.tags',
             ],
         },
     },

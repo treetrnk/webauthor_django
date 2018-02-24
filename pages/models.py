@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 #from .tools import recursive_parents
 import hashlib
+import markdown
 
 class Tag(models.Model):
         name = models.CharField(max_length=50)
@@ -72,6 +73,9 @@ class Page(models.Model):
                         obj.author = request.user
                 obj.save()
 
+        def html_body(self):
+            return markdown.markdown(self.body)
+
         def children(self):
                 return Page.objects.filter(parent=self, pub_date__lte=timezone.now())
 
@@ -81,9 +85,13 @@ class Page(models.Model):
                 else:
                         return False
 
+        def clean_body(self):
+            pattern = '(?:\<[\s\S]*?\>)|(?:\!\[[\s\S]*?\]\([\s\S]*?\))|\#|\*|(?:\[)|(?:\]\([\s\S]*?\))|(?:[\n\r]{2,})'
+            return re.sub(pattern, '', self.body)
+
         def banner_url(self):
             if self.banner is None:
-                return '/media/default.png'
+                return '/static/images/forest.png'
             return '/media/' + self.banner.filename()
 
         def full_path(self):

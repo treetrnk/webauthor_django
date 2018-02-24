@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from datetime import datetime
 from .models import Page,Tag
 import pytz
-from webauthor_django.views import handler404,default_meta
+from webauthor_django.views import handler404,set_meta
 import hashlib
 
 utc = pytz.UTC
@@ -33,7 +33,6 @@ def index(request):
     else:
         pages = Page.objects.filter(pub_date__lte=datetime.now()).order_by('-pub_date')
     context['pages'] = pages
-    context['tags'] = Tag.objects.all().order_by('name')
     # now return the rendered template
     return render(request, 'pages/page.html', context)
 
@@ -42,22 +41,19 @@ def page(request):
     path_list = path.split('/')
     path_list = list(filter(bool, path_list))
     page = Page.objects.get(slug='home') if not len(path_list) else get_object_or_404(Page, slug=path_list[-0])
-    tags = Tag.objects.all().order_by('name')
     matched_path = True if not len(path_list) or page.full_path() == path else False
     if page and page.pub_date <= utc.localize(datetime.now()) and matched_path:
-        meta = default_meta(page.title, page.banner_url, page.description)
-        return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta, 'tags': tags})
+        meta = set_meta(page.title, page.banner_url, page.description)
+        return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta})
     elif request.method == 'GET' and 'code' in request.GET:
         print(page.code())
-        meta = default_meta()
         if request.GET['code'] == page.code():
-            return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta, 'tags': tags})
+            return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': set_meta()})
         else:
             return handler404(request)
     else:
         return handler404(request)
 
 def rss(request):
-    meta = default_meta()
     pages = Page.objects.filter(pub_date__lte=datetime.now()).order_by('-pub_date')
-    return render(request, 'pages/rss.xml', {'pages': pages, 'meta': meta})
+    return render(request, 'pages/rss.xml', {'pages': pages, 'meta': set_meta()})
