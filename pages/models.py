@@ -51,6 +51,7 @@ class Page(models.Model):
         ]
         title = models.CharField(max_length=200)
         slug = models.SlugField(max_length=200, null=True)
+        path = models.CharField(max_length=500, editable=False, blank=True, null=True)
         parent = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
         template = models.CharField(max_length=100, choices=TEMPLATE_CHOICES)
         banner = models.ForeignKey(Image, blank=True, null=True, on_delete=models.SET_NULL)
@@ -66,12 +67,20 @@ class Page(models.Model):
         def __str__(self):
                 return self.title
 
-        def save_model(self, request, obj, form, change):
-                """When creating a new object, set the creator field.
-                """
-                if not change:
-                        obj.author = request.user
-                obj.save()
+        class Meta:
+            #order_with_respect_to = 'parent'
+            ordering = ['sort', 'pub_date', 'title']
+
+        """
+        def save(self):
+            path = self.slug
+            parent = self.parent
+            while parent:
+                path = parent.slug + '/' + path
+                parent = parent.parent
+            self.path = path 
+            self.save()
+        """
 
         def html_body(self):
             return markdown.markdown(self.body)

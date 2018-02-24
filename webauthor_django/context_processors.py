@@ -16,3 +16,12 @@ def nav(request):
 
 def tags(request):
     return {'tags': Tag.objects.all().order_by('name')}
+
+def theme(request):
+    try:
+        request.session['theme'] = request.GET['theme']
+    except KeyError:
+        if not 'theme' in request.session:
+           request.session['theme'] = ''
+    return {'theme': request.session['theme']}
+

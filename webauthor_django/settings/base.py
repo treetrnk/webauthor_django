@@ -67,6 +67,7 @@ TEMPLATES = [
                 'webauthor_django.context_processors.baseurl',
                 'webauthor_django.context_processors.nav',
                 'webauthor_django.context_processors.tags',
+                'webauthor_django.context_processors.theme',
             ],
         },
     },

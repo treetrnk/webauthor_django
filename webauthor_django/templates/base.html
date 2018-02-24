@@ -47,6 +47,22 @@
 				{% endif %}
 				*background-image: url({{ page.banner_url }});
 			}
+
+			{% if theme == 'dark' %}
+				body {
+					background-color: #1c1c1c;
+					color: #aaa;
+				}
+				.modal-content {
+					background-color: #222;
+					color: #aaa;
+				}
+				section.content-wrapper {
+					background-color: #222;
+					color: #aaa;
+				}
+
+			{% endif %}
 		</style>
 
 	</head>
