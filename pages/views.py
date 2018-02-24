@@ -1,20 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from datetime import datetime
 from .models import Page,Tag
 import pytz
-from webauthor_django.views import handler404
+from webauthor_django.views import handler404,default_meta
 import hashlib
 
 utc = pytz.UTC
 
-def default_meta(title='', image='/static/images/logo.png', description='A blog by Nathan Hare about Fate Core and other roleplaying games.'):
-    title_suffix = '' if len(title) else ' - A blog by Nathan Hare'
-    return {
-        'title': str(title) + 'rpg stuff' + str(title_suffix),
-        'image': str(image),
-        'favicon': '/static/images/favicon.png',
-        'description': str(description),
-    }
 
 def index(request):
     try:
@@ -45,26 +37,21 @@ def index(request):
     # now return the rendered template
     return render(request, 'pages/page.html', context)
 
-def page(request, path):
-    page = Page.objects.filter(pub_date__year=year,
-        pub_date__month=month,
-        #pub_date__day=day,
-        slug=slug)[0]
-    meta = {
-        'title': page.title + ' - rpg stuff',
-        'image': str(page.banner_url()),
-        'favicon': '/static/images/favicon.png',
-        'description': page.description(),
-    }
-    print(request.GET)
-    print(hasattr(request.GET, 'code'))
+def page(request):
+    path = request.path + '/' if request.path[-1] != '/' else request.path
+    path_list = path.split('/')
+    path_list = list(filter(bool, path_list))
+    page = Page.objects.get(slug='home') if not len(path_list) else get_object_or_404(Page, slug=path_list[-0])
     tags = Tag.objects.all().order_by('name')
-    if pae.pub_date <= utc.localize(datetime.now()):
-        return render(request, 'blog/page.html', {'page': page, 'meta': meta, 'tags': tags})
+    matched_path = True if not len(path_list) or page.full_path() == path else False
+    if page and page.pub_date <= utc.localize(datetime.now()) and matched_path:
+        meta = default_meta(page.title, page.banner_url, page.description)
+        return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta, 'tags': tags})
     elif request.method == 'GET' and 'code' in request.GET:
         print(page.code())
+        meta = default_meta()
         if request.GET['code'] == page.code():
-            return render(request, 'pages/page.html', {'page': page, 'meta': meta, 'tags': tags})
+            return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta, 'tags': tags})
         else:
             return handler404(request)
     else:

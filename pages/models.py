@@ -59,7 +59,7 @@ class Page(models.Model):
         sidebar = models.TextField(max_length=1000, blank=True)
         author = models.ForeignKey(User, on_delete=models.PROTECT)
         sort = models.IntegerField(default=75)
-        pub_date = models.DateTimeField(auto_now_add=True)
+        pub_date = models.DateTimeField()
         edit_date = models.DateTimeField(auto_now=True)
 
         def __str__(self):
@@ -85,6 +85,19 @@ class Page(models.Model):
             if self.banner is None:
                 return '/media/default.png'
             return '/media/' + self.banner.filename()
+
+        def full_path(self):
+            path = self.slug
+            parent = self.parent
+            while parent:
+                path = parent.slug + '/' + path
+                parent = parent.parent
+            return '/' + path + '/'
+
+        def description(self):
+            if self.summary is None or not self.summary:
+                return self.clean_body()[0:295] + '...'
+            return self.summary + '...'
 
         def code(self):
             return hashlib.sha512(str(self.slug + 
