@@ -45,7 +45,7 @@
 				{% if page.template == 'page' or page.template == 'blog' %}
 					height: 250px;
 				{% endif %}
-				*background-image: url({{ page.banner_url }});
+				background-image: url({{ page.banner_url }});
 			}
 
 			{% if theme == 'dark' %}
@@ -61,7 +61,9 @@
 					background-color: #222;
 					color: #aaa;
 				}
-
+				ol.breadcrumb {
+					background-color: #333;
+				}
 			{% endif %}
 		</style>
 
@@ -198,9 +200,9 @@
 		<section class="container content-wrapper">
 			{% if page.parent %}
 				<ol class="breadcrumb">
-					{% for parent in page.all_parents %}
+					{# for parent in page.all_parents #}
 						<li><a href="{{ parent.slug }}">{{ parent.title }}</a></li>
-					{% endfor %}
+					{# endfor #}
 						<li class="active">{{ page.title }}</li>
 				</ol>
 			{% endif %}

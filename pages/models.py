@@ -5,6 +5,7 @@ from datetime import datetime
 #from .tools import recursive_parents
 import hashlib
 import markdown
+import os
 
 class Tag(models.Model):
         name = models.CharField(max_length=50)
