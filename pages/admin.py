@@ -5,13 +5,13 @@ from datetime import datetime
 import hashlib
 
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'get_path', 'banner', 'get_banner', 'author', 'pub_date')
+    list_display = ('title', 'slug', 'get_path', 'get_banner', 'author', 'pub_date')
     prepopulated_fields = {'slug': ('title',)}
     def get_banner(self, obj):
         return format_html(
             '<a href="{}" target="banner">{}</a>',
             str(obj.banner_url()),
-            str(obj.banner_url())
+            str(obj.banner)
         )
     get_banner.short_description = 'Banner Path'
     get_banner.admin_order_field = "banner"
