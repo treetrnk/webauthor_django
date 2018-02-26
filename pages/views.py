@@ -38,10 +38,12 @@ def index(request):
 
 def page(request):
     path = request.path + '/' if request.path[-1] != '/' else request.path
-    path_list = path.split('/')
-    path_list = list(filter(bool, path_list))
-    page = Page.objects.get(slug='home') if not len(path_list) else get_object_or_404(Page, slug=path_list[-0])
-    matched_path = True if not len(path_list) or page.full_path() == path else False
+    #path_list = path.split('/')
+    #path_list = list(filter(bool, path_list))
+    print('Path: ' + path)
+    page = Page.objects.get(slug='home') if not len(path) > 1 else get_object_or_404(Page, path=path)
+    print('Page Path: ' + page.path)
+    matched_path = True if not len(path) > 1 or page.path == path else False
     if page and page.pub_date <= utc.localize(datetime.now()) and matched_path:
         meta = set_meta(page.title, page.banner_url, page.description)
         return render(request, 'pages/' + page.template + '.html', {'page': page, 'meta': meta})

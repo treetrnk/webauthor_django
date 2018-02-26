@@ -51,6 +51,7 @@ class Page(models.Model):
         ]
         title = models.CharField(max_length=200)
         slug = models.SlugField(max_length=200, null=True)
+        dir_path = models.CharField(max_length=500, editable=False, blank=True, null=True)
         path = models.CharField(max_length=500, editable=False, blank=True, null=True)
         parent = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
         template = models.CharField(max_length=100, choices=TEMPLATE_CHOICES)
@@ -69,18 +70,16 @@ class Page(models.Model):
 
         class Meta:
             #order_with_respect_to = 'parent'
-            ordering = ['sort', 'pub_date', 'title']
+            ordering = ['dir_path', 'sort', 'pub_date', 'title']
 
-        """
-        def save(self):
-            path = self.slug
+        def clean(self):
+            path = '/'
             parent = self.parent
             while parent:
-                path = parent.slug + '/' + path
+                path = '/' + parent.slug + path
                 parent = parent.parent
-            self.path = path 
-            self.save()
-        """
+            self.dir_path = path
+            self.path = path + self.slug + '/'
 
         def html_body(self):
             return markdown.markdown(self.body)
@@ -104,12 +103,7 @@ class Page(models.Model):
             return '/media/' + self.banner.filename()
 
         def full_path(self):
-            path = self.slug
-            parent = self.parent
-            while parent:
-                path = parent.slug + '/' + path
-                parent = parent.parent
-            return '/' + path + '/'
+            return self.path + self.slug + '/'
 
         def description(self):
             if self.summary is None or not self.summary:

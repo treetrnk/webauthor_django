@@ -19,11 +19,11 @@ class PageAdmin(admin.ModelAdmin):
     def get_path(self, obj):
         return format_html(
             '<a href="{}" target="page">{}</a>',
-            str(obj.full_path()),
-            str(obj.full_path())
+            str(obj.path),
+            str(obj.path)
         )
     get_path.short_description = "Path"
-    get_path.admin_order_field = "parent"
+    get_path.admin_order_field = "path"
 
     """
     def get_url(self, obj):
