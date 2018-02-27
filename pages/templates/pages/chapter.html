@@ -10,10 +10,10 @@
       <small>Theme:</small>
       <small>
         <a href="?theme=light" id="light-theme" title="Light Theme">
-					<img src="{% static 'pages/images/light-theme.png' %}" />
+					<img src="{% static '/images/light-theme.png' %}" />
         </a>
         <a href="?theme=dark" id="dark-theme" title="Dark Theme">
-					<img src="{% static 'pages/images/dark-theme.png' %}" />
+					<img src="{% static '/images/dark-theme.png' %}" />
         </a>
       </small>
     </p><br />
@@ -30,28 +30,31 @@
 		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
     <nav class="clearfix">
       <ul class="pager">
-        <?=$page->nextPrev();?> 
+				<li><a href="#">Prev. Page</a></li>
+				<li><a href="#">Next. Page</a></li>
       </ul>
     </nav>
     <div class="content">
-      <?=$page->formattedBody;?>
+			{{ page.html_body|safe }}
     </div>
   
     <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
-        <p>
-				{{ page.tags }}
-        </p>
+				<i class="fa fa-tags"></i> Tags:
+				{% for tag in page.tags.all %}
+					<a href="/?tag={{ tag }}"><span class="label label-default">{{ tag }}</span></a>
+				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
         <small class="text-muted">Share:</small>
-        <?=getShareButtons($page->url);?>
+				{# share buttons #}
       </div>
     </div>
     <nav aria-label="...">
       <ul class="pager">
-        <?=$page->nextPrev();?> 
+				<li><a href="#">Prev. Page</a></li>
+				<li><a href="#">Next. Page</a></li>
       </ul>
     </nav>
   </div>
@@ -87,3 +90,4 @@
   </div>
 </div>
 
+{% endblock %}

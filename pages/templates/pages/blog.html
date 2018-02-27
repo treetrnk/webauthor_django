@@ -28,8 +28,11 @@
 					<div class='panel-body'>
 						<p class='text-muted pull-right'><small>{{ child.pub_date }}</small></p>
 						<h3><a href='{{ child.slug }}'>{{ child.title }}</a></h3>
-						<p>{{ child.body }} . . .</p>
-						{{ child.tags }}
+						<p>{{ child.description }}</p>
+						<i class="fa fa-tags"></i> Tags:
+						{% for tag in child.tags.all %}
+							<a href="/?tag={{ tag }}"><span class="label label-default">{{ tag }}</span></a>
+						{% endfor %}
 					</div>
 				</div>
 			{% endfor %}

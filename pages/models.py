@@ -6,6 +6,7 @@ from datetime import datetime
 import hashlib
 import markdown
 import os
+import re
 
 class Tag(models.Model):
         name = models.CharField(max_length=50)

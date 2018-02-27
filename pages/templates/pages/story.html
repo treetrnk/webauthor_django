@@ -19,13 +19,16 @@
     </p>
     <p class="text-muted"><small>{{ page.pub_date }}</small></p>
     <div class="content">
-			{{ page.body|safe }}
+			{{ page.html_body|safe }}
     </div>
   
     <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
-				{{ page.tags }}
+				<i class="fa fa-tags"></i> Tags:
+				{% for tag in page.tags.all %}
+					<a href="/?tag={{ tag }}"><span class="label label-default">{{ tag }}</span></a>
+				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
         <small class="text-muted">Share:</small>
