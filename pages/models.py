@@ -58,7 +58,7 @@ class Page(models.Model):
         parent = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
         template = models.CharField(max_length=100, choices=TEMPLATE_CHOICES)
         banner = models.ForeignKey(Image, blank=True, null=True, on_delete=models.SET_NULL)
-        body = models.TextField(max_length=10000)
+        body = models.TextField(max_length=10000000)
         tags = models.ManyToManyField(Tag, blank=True)
         summary = models.TextField(max_length=300, blank=True)
         sidebar = models.TextField(max_length=1000, blank=True)
@@ -90,19 +90,25 @@ class Page(models.Model):
                 return Page.objects.filter(parent=self, pub_date__lte=timezone.now())
 
         def all_parents(self):
-                if self.parent:
-                        return recursive_parents(self.parent)
-                else:
-                        return False
+            parent_list = []
+            current_parent = self.parent
+            while current_parent:
+                parent_list.append(current_parent)
+                current_parent = current_parent.parent
+            return parent_list
 
         def clean_body(self):
             pattern = '(?:\<[\s\S]*?\>)|(?:\!\[[\s\S]*?\]\([\s\S]*?\))|\#|\*|(?:\[)|(?:\]\([\s\S]*?\))|(?:[\n\r]{2,})'
             return re.sub(pattern, '', self.body)
 
         def banner_url(self):
-            if self.banner is None:
-                return '/static/images/forest.png'
-            return '/media/' + self.banner.filename()
+            parents = self.all_parents()
+            if self.banner:
+                return '/media/' + self.banner.filename()
+            for parent in parents[::-1]:
+                if parent.banner:
+                    return '/media/' + parent.banner.filename()
+            return '/static/images/forest.png'
 
         def full_path(self):
             return self.path + self.slug + '/'
@@ -112,9 +118,17 @@ class Page(models.Model):
                 return self.clean_body()[0:295] + '...'
             return self.summary + '...'
 
+        def word_count(self):
+            return len(re.split(r'\w+', self.clean_body()))
+
+        def read_time(self):
+            minimum = int(self.word_count() / 200)
+            maximum = int(self.word_count() / 150)
+            return str(minimum) + ' - ' + str(maximum) + ' mins.' if minimum > 0 else '< 1 min.'
+
         def code(self):
-            return hashlib.sha512(str(self.slug + 
-                str(datetime.now().month) + 
+            return hashlib.sha512(str(self.slug +
+                str(datetime.now().month) +
                 str(datetime.now().day)).encode('utf-8')).hexdigest()
 
         def show_story_title(self):

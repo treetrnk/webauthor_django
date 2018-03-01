@@ -4,7 +4,7 @@
 {% load static %}
 <div class="row">
   <div class="col-md-7 col-md-offset-1 col-sm-12 col-xs-12 content">
-    
+
 		<h1>{{ page.title }}</h1>
     <p class="pull-right text-muted" id="theme-select">
       <small>Theme:</small>
@@ -20,11 +20,10 @@
     <p>
       <small>
         <span class="text-muted">
-					{{ page.pub_date }}<br />
-          <span title="Word Count" data-toggle="tooltip" class="badge badge-default"># <?=$page->words;?></span> <!--&#8226;-->
-          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-default">&#8987; <?=$page->readTime;?></span>
+          <span title="Word Count" data-toggle="tooltip" class="badge badge-default"># {{ page.word_count }}</span> <!--&#8226;-->
+          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-default">&#8987; {{ page.read_time }}</span>
         </span>
-        
+
       </small>
     </p>
 		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
@@ -37,7 +36,7 @@
     <div class="content">
 			{{ page.html_body|safe }}
     </div>
-  
+
     <br /><br />
     <div class="row">
       <div class="col-sm-6 col-xs-12">
@@ -72,7 +71,7 @@
     /**
     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-    
+
     var disqus_config = function () {
 			this.page.url = "{{ page.slug }}";  // Replace PAGE_URL with your page's canonical URL variable
 			this.page.identifier = "{{ page.id }"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
