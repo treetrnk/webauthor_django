@@ -8,6 +8,20 @@ import markdown
 import os
 import re
 
+def get_child_list(obj, current_id=""):
+    children = Page.objects.filter(parent=obj.parent, pub_date__lte=timezone.now())
+    child_list = "<ul>"
+    for child in children:
+        print(child.title)
+        if current_id and current_id is child.id:
+            child_list += "<li>" + child.title
+        else:
+            child_list += "<li><a href='" + child.full_path + "'>" + child.title + "</a>"
+        if child.children():
+            child_list += get_child_list(child, current_id)
+        child_list += "</li>"
+    return child_list + "</ul>"
+
 class Tag(models.Model):
         name = models.CharField(max_length=50)
 
@@ -130,6 +144,18 @@ class Page(models.Model):
             return hashlib.sha512(str(self.slug +
                 str(datetime.now().month) +
                 str(datetime.now().day)).encode('utf-8')).hexdigest()
+
+        def full_sidebar(self):
+            full_sidebar = self.sidebar 
+            if self.template is "story" or self.template is "blog":
+                full_sidebar += "<h2>Table of Contents</h2>"
+                try:
+                    full_sidebar += get_child_list(self.children()[0])
+                except IndexError:
+                    full_sidebar += "</ul><p>Nothing here yet...</p>"
+            elif self.template is "chapter" or self.template is "post":
+                full_sidebar += "<h2>Table of Contents</h2>" + get_child_list(self, self.id)
+            return full_sidebar
 
         def show_story_title(self):
                 display_in = ['chapter', 'post']
