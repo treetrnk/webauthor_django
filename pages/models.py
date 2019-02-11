@@ -144,18 +144,26 @@ class Page(models.Model):
             return str(minimum) + ' - ' + str(maximum) + ' mins.' if minimum > 0 else '< 1 min.'
 
         def table_of_contents(self):
-            toc = "<h2>Table of Contents</h2><ul>"
-            for child in self.children():
-                toc += "<li><a href='" + child.path + "'>" + child.title + "</a></li>"
-            toc += "</ul>"
-            return toc
+            output = "<h2>Table of Contents</h2><ul>"
+            if self.template == "story" or self.template == "blog":
+                pages = self.children()
+            else:
+                pages = self.siblings()
+                #output += "<li><a href='" + self.parent.path + "'>" + self.parent.title + "</a><ul>"
+            for page in pages:
+                if page == self:
+                    output += "<li><b>" + page.title + "</b>"
+                else:
+                    output += "<li><a href='" + page.path + "'>" + page.title + "</a>"
+                if page.children():
+                    output += "<ul>"
+                    for child in page.children():
+                        output += "<li><a href='" + child.path + "'>" + child.title + "</a></li>"
+                    output += "</ul>"
+                output += "</li>"
 
-        def table_of_contents_child(self):
-            toc = "<h2>Table of Contents</h2><ul>"
-            for sibling in self.siblings():
-                toc += "<li><a href='" + sibling.path + "'>" + sibling.title + "</a></li>"
-            toc += "</ul>"
-            return toc
+            output += "</ul>"
+            return output
 
         def code(self):
             return hashlib.sha512(str(self.slug +
