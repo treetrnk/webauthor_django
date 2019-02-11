@@ -77,8 +77,8 @@
 				<div class="row">
 					<div class="col-md-4 col-sm-10 col-xs-10 site-title">
 						<a href="/">
-							<span class="small">The Writings Of</span>
-							<h2>Nathan Hare</h2>
+							<span class="small">The Writings of</span>
+							<h2>N. H. Hare</h2>
 						</a>
 					</div>
 					<nav class="col-md-8 col-sm-2 col-xs-2 navlinks small text-right">
@@ -200,9 +200,9 @@
 		<section class="container content-wrapper">
 			{% if page.parent %}
 				<ol class="breadcrumb">
-					{# for parent in page.all_parents #}
-						<li><a href="{{ parent.slug }}">{{ parent.title }}</a></li>
-					{# endfor #}
+					{% for parent in page.all_parents %}
+						<li><a href="{{ parent.path }}">{{ parent.title }}</a></li>
+					{% endfor %}
 						<li class="active">{{ page.title }}</li>
 				</ol>
 			{% endif %}

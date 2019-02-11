@@ -107,7 +107,7 @@ class Page(models.Model):
             parent_list = []
             current_parent = self.parent
             while current_parent:
-                parent_list.append(current_parent)
+                parent_list.insert(0, current_parent)
                 current_parent = current_parent.parent
             return parent_list
 

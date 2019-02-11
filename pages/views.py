@@ -42,6 +42,8 @@ def page(request):
     #path_list = list(filter(bool, path_list))
     print('Path: ' + path)
     page = Page.objects.get(slug='home') if not len(path) > 1 else get_object_or_404(Page, path=path)
+    print('Parents: ')
+    print(page.all_parents())
     print('Page Path: ' + page.path)
     matched_path = True if not len(path) > 1 or page.path == path else False
     if page and page.pub_date <= utc.localize(datetime.now()) and matched_path:

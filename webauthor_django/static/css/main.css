@@ -200,17 +200,17 @@
 				-moz-appearance: none;
 				appearance: none;
 				background-color: transparent;
-				color: #48a3f2;
+				color: #be82ff;
 				z-index: 6;
 			}
 			progress::-webkit-progress-bar {
 				background-color: transparent;
 			}
 			progress::-webkit-progress-value {
-				background-color: #48a3f2;
+				background-color: #be82ff;
 			}
 			progress::-moz-progress-bar {
-				background-color: #48a3f2;
+				background-color: #be82ff;
 			}
 			div.jumbotron {
 				margin-bottom: 0;

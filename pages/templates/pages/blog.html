@@ -27,7 +27,7 @@
 				<div class='panel panel-default'>
 					<div class='panel-body'>
 						<p class='text-muted pull-right'><small>{{ child.pub_date }}</small></p>
-						<h3><a href='{{ child.slug }}'>{{ child.title }}</a></h3>
+						<h3><a href='{{ child.path }}'>{{ child.title }}</a></h3>
 						<p>{{ child.description }}</p>
 						<i class="fa fa-tags"></i> Tags:
 						{% for tag in child.tags.all %}
