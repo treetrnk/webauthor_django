@@ -103,6 +103,9 @@ class Page(models.Model):
         def children(self):
                 return Page.objects.filter(parent=self, pub_date__lte=timezone.now())
 
+        def siblings(self):
+                return Page.objects.filter(parent=self.parent, pub_date__lte=timezone.now())
+
         def all_parents(self):
             parent_list = []
             current_parent = self.parent
@@ -139,6 +142,20 @@ class Page(models.Model):
             minimum = int(self.word_count() / 200)
             maximum = int(self.word_count() / 150)
             return str(minimum) + ' - ' + str(maximum) + ' mins.' if minimum > 0 else '< 1 min.'
+
+        def table_of_contents(self):
+            toc = "<h2>Table of Contents</h2><ul>"
+            for child in self.children():
+                toc += "<li><a href='" + child.path + "'>" + child.title + "</a></li>"
+            toc += "</ul>"
+            return toc
+
+        def table_of_contents_child(self):
+            toc = "<h2>Table of Contents</h2><ul>"
+            for sibling in self.siblings():
+                toc += "<li><a href='" + sibling.path + "'>" + sibling.title + "</a></li>"
+            toc += "</ul>"
+            return toc
 
         def code(self):
             return hashlib.sha512(str(self.slug +
