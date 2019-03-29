@@ -2,21 +2,12 @@
 
 {% block content %}
 {% load static %}
-<div class="row">
-  <div class="col-md-7 col-md-offset-1 col-sm-12 col-xs-12 content">
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col-12 content">
     
+		{% include 'theme-chooser.html' %}
+
     <h1>{{ page.title }}</h1>
-    <p class="pull-right text-muted" id="theme-select">
-      <small class="hidden-xs">Theme:</small>
-      <small>
-        <a href="?theme=light" id="light-theme" title="Light Theme">
-          <img src="{% static '/images/light-theme.png' %}" />
-        </a>
-        <a href="?theme=dark" id="dark-theme" title="Dark Theme">
-          <img src="{% static '/images/dark-theme.png' %}" />
-        </a>
-      </small>
-    </p>
     <p class="text-muted"><small>{{ page.pub_date }}</small></p>
     <div class="content">
 			{{ page.html_body|safe }}
@@ -27,7 +18,7 @@
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
 				{% for tag in page.tags.all %}
-					<a href="/?tag={{ tag }}"><span class="label label-default">{{ tag }}</span></a>
+					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
@@ -43,13 +34,13 @@
       </ul>
     </nav>
   </div>
-  <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
+  <aside class="col-md-3 col-12">
 		{{ page.table_of_contents|safe }}
 		{{ page.full_sidebar|safe }}
   </aside>
 </div>
-<div class="row">
-  <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+<div class="row justify-content-md-center">
+  <div class="col-md-8 col-12">
     <h2>Comments</h2>
 
     <div id="disqus_thread"></div>

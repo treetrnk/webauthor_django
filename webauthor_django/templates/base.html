@@ -2,7 +2,7 @@
 {% load static %}
 <html lang='en'>
 	<head>
-		<title>{{ page.title }} - Nathan Hare</title>
+		<title>{{ page.title }} - Houston Hare</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<meta name="description" content="{{ page.body }}" />
@@ -24,10 +24,10 @@
     <!-- Open Graph data -->
 		<meta property="og:title" content="{{ page.title }}" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="http://nathanhare.net" />
+    <meta property="og:url" content="http://houstonhare.com" />
 		<meta property="og:image" content="{{ page.banner }}" />
 		<meta property="og:description" content="{{ page.body }}" />
-    <meta property="og:site_name" content="The Writings of Nathan Hare" />
+    <meta property="og:site_name" content="Stories by Houston Hare" />
 		<meta property="article:published_time" content="{{ page.pub_date }}" />
 		<meta property="article:modified_time" content="{{ page.pub_date }}" />
 		<meta property="article:section" content="{{ page.parent.title }}" />
@@ -54,6 +54,10 @@
 					background-color: #1c1c1c;
 					color: #aaa;
 				}
+				.card {
+					background-color: #222;
+					color: #aaa;
+				}
 				.modal-content {
 					background-color: #222;
 					color: #aaa;
@@ -78,8 +82,8 @@
 				<div class="row">
 					<div class="col-md-4 col-sm-10 col-xs-10 site-title">
 						<a href="/">
-							<!--<span class="small">The Writings of</span>-->
-							<h2><i class="fas fa-tree"></i> Treetrunk Stories</h2>
+						<span class="small">Stories by</span>
+							<h2>Houston Hare</h2>
 						</a>
 					</div>
 					<nav class="col-md-8 col-sm-2 col-xs-2 navlinks small text-right">
@@ -202,9 +206,9 @@
 			{% if page.parent %}
 				<ol class="breadcrumb">
 					{% for parent in page.all_parents %}
-						<li><a href="{{ parent.path }}">{{ parent.title }}</a></li>
+						<li class="breadcrumb-item"><a href="{{ parent.path }}">{{ parent.title }}</a></li>
 					{% endfor %}
-						<li class="active">{{ page.title }}</li>
+						<li class="breadcrumb-item active">{{ page.title }}</li>
 				</ol>
 			{% endif %}
 			{# $page->breadcrumbs() #}
@@ -213,6 +217,7 @@
 			<div class='alert alert-danger' role='alert'><b>Error!</b> $error</div>
 			<div class='alert alert-success' role='alert'><b>Success! </b>$success</div>
 			-->
+			<br />
 
 			{% block content %}
 			{% endblock %}
@@ -220,7 +225,7 @@
     </section>
 
 		<footer class="text-muted small">
-			<p class="text-center">&#169; Copyright 2019, Nathan Hare</a>
+			<p class="text-center">&#169; Copyright 2019, Houston Hare</a>
       <p class="text-center">
         "<a href="http://www.newgrounds.com/art/view/llamareaper/fantasy-landscape-2" target="_blank">Fantasy Landscape</a>"
         and "<a href="http://www.newgrounds.com/art/view/llamareaper/pumpkinbutts" target="_blank">Pumpkinbutts.</a>"

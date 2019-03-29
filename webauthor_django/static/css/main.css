@@ -33,15 +33,15 @@
 			}
 			div.site-title {
 				padding-top: 3px;
-				padding-bottom: 5px;
-				line-height: initial;
+				padding-bottom: 2px;
+				line-height: 20px;
 			}
 			div.site-title a h2 {
 				margin: 0;
         font-family: "Yesteryear", cursive;
 				text-transform: none;
         font-weight: normal;
-        font-size: 1.8em;
+        font-size: 1.7em;
 			}
 			.small {
 				font-size: 14px;
@@ -181,7 +181,7 @@
 			body {
         background-color: #eeeeee;
         color: #222222;
-				font-size: 175%;
+				font-size: 17.5px;
         font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
         padding-top: 68px;
 			}
@@ -219,6 +219,7 @@
 				display: inline;
 				color: #ffffff;
         text-shadow: 0 0 30px #000000;
+				font-size: 300%;
 /*
 				background: rgba(0, 0, 0, .4);
 */

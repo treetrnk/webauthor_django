@@ -2,37 +2,24 @@
 
 {% block content %}
 {% load static %}
-<div class="row">
-  <div class="col-md-7 col-md-offset-1 col-sm-12 col-xs-12 content">
+<div class="row justify-content-md-center">
+  <div class="col-md-7 col content">
+
+		{% include 'theme-chooser.html' %}
 
 		<h1>{{ page.title }}</h1>
-    <p class="pull-right text-muted" id="theme-select">
-      <small>Theme:</small>
-      <small>
-        <a href="?theme=light" id="light-theme" title="Light Theme">
-					<img src="{% static '/images/light-theme.png' %}" />
-        </a>
-        <a href="?theme=dark" id="dark-theme" title="Dark Theme">
-					<img src="{% static '/images/dark-theme.png' %}" />
-        </a>
-      </small>
-    </p><br />
     <p>
       <small>
         <span class="text-muted">
-          <span title="Word Count" data-toggle="tooltip" class="badge badge-default"># {{ page.word_count }}</span> <!--&#8226;-->
-          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-default">&#8987; {{ page.read_time }}</span>
+          <span title="Word Count" data-toggle="tooltip" class="badge badge-secondary"># {{ page.word_count }}</span> <!--&#8226;-->
+          <span title="Reading Time (200-150 wpm)" data-toggle="tooltip" class="badge badge-secondary">&#8987; {{ page.read_time }}</span>
         </span>
 
       </small>
     </p>
 		<p class="text-muted"><small>{{ page.pub_date }}</small></p>
-    <nav class="clearfix">
-      <ul class="pager">
-				<li><a href="#">Prev. Page</a></li>
-				<li><a href="#">Next. Page</a></li>
-      </ul>
-    </nav>
+		<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
+		<a href="#" class="btn btn-light float-right border-secondary">Next Page</a></li>
     <div class="content">
 			{{ page.html_body|safe }}
     </div>
@@ -42,7 +29,7 @@
       <div class="col-sm-6 col-xs-12">
 				<i class="fa fa-tags"></i> Tags:
 				{% for tag in page.tags.all %}
-					<a href="/?tag={{ tag }}"><span class="label label-default">{{ tag }}</span></a>
+					<a href="/?tag={{ tag }}"><span class="badge badge-secondary">{{ tag }}</span></a>
 				{% endfor %}
       </div>
       <div class="col-sm-6 col-xs-12 text-right share-btns">
@@ -50,20 +37,19 @@
 				{# share buttons #}
       </div>
     </div>
-    <nav aria-label="...">
-      <ul class="pager">
-				<li><a href="#">Prev. Page</a></li>
-				<li><a href="#">Next. Page</a></li>
-      </ul>
-    </nav>
+		<br />
+		<a href="#" class="btn btn-light border-secondary">Prev. Page</a></li>
+			<a href="#" class="btn btn-light float-right border-secondary">Next. Page</a></li>
+		<br />
+		<br />
   </div>
   <aside class="col-md-3 col-md-offset-0 col-sm-10 col-sm-offset-1 col-xs-12">
 		{{ page.table_of_contents|safe }}
 		{{ page.full_sidebar|safe }}
   </aside>
 </div>
-<div class="row">
-  <div class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 col-xs-12">
+<div class="row justify-content-md-center">
+  <div class="col-md-8 col">
     <h2>Comments</h2>
 
     <div id="disqus_thread"></div>
